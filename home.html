@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>부산 메디컬리그 기록 열람</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+      background-color: #f5f7fa;
+      color: #222;
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    header {
+      background: #0d2b52;
+      color: white;
+      padding: 20px 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .site-title {
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .site-subtitle {
+      font-size: 14px;
+      opacity: 0.9;
+      margin-top: 4px;
+    }
+
+    nav ul {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      padding: 8px 14px;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+
+    nav a:hover {
+      background: rgba(255,255,255,0.15);
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #163d70, #295b97);
+      color: white;
+      padding: 48px 0 56px;
+    }
+
+    .hero-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  align-items: stretch;
+}
+
+    .hero-panel {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 16px;
+  padding: 22px;
+  backdrop-filter: blur(4px);
+  min-width: 0;
+}
+
+    .hero-panel h2 {
+      font-size: 24px;
+      margin-bottom: 14px;
+    }
+
+    .ranking-table {
+      width: 100%;
+      border-collapse: collapse;
+      color: white;
+      font-size: 15px;
+    }
+
+    .ranking-table th,
+    .ranking-table td {
+      padding: 10px 8px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .ranking-table th {
+      font-weight: 700;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .ranking-table td.team-name {
+      text-align: left;
+      font-weight: 600;
+    }
+
+.schedule-list {
+  max-height: 260px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.schedule-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.schedule-list::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.28);
+  border-radius: 999px;
+}
+
+.schedule-list::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.08);
+  border-radius: 999px;
+}
+    
+    .schedule-list li {
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .schedule-list li:last-child {
+      border-bottom: none;
+    }
+
+    .schedule-date {
+      font-size: 13px;
+      opacity: 0.85;
+      margin-bottom: 4px;
+    }
+
+    .schedule-match {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .hero-link {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.2);
+      font-weight: 700;
+      transition: 0.2s;
+    }
+
+    .hero-link:hover {
+      background: rgba(255,255,255,0.22);
+    }
+
+    main {
+      padding: 40px 0 60px;
+    }
+
+    section {
+      margin-bottom: 40px;
+    }
+
+    .section-title {
+      font-size: 26px;
+      margin-bottom: 18px;
+      color: #0d2b52;
+    }
+
+    .cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.card {
+  background-color: #ffffff;
+  border: 1px solid #d9e2ec;
+  border-radius: 16px;
+  padding: 40px 24px;
+  text-align: center;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+
+.card-link:hover .card {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+  background-color: #fdfefe;
+}
+
+    .card h3 {
+  font-size: 28px;
+  margin-bottom: 16px;
+  color: #163d70;
+}
+
+.card p {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 16px;
+}
+
+.quick-link {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1f5ca8;
+}
+
+    .notice-box {
+      background: white;
+      border-radius: 14px;
+      padding: 22px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.07);
+    }
+
+    .notice-list li {
+      padding: 12px 0;
+      border-bottom: 1px solid #e7ebf0;
+    }
+
+    .notice-list li:last-child {
+      border-bottom: none;
+    }
+
+    .notice-date {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 4px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+    }
+
+    .stat-box {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.07);
+    }
+
+    .stat-box .number {
+      font-size: 30px;
+      font-weight: 800;
+      color: #163d70;
+    }
+
+    .stat-box .label {
+      margin-top: 8px;
+      color: #666;
+      font-size: 14px;
+    }
+
+    footer {
+      background: #0d2b52;
+      color: #dce6f2;
+      padding: 24px 0;
+      font-size: 14px;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .site-title {
+        font-size: 24px;
+      }
+
+      .hero-panel h2 {
+        font-size: 21px;
+      }
+
+      .schedule-match {
+        font-size: 15px;
+      }
+
+      .ranking-table {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container header-top">
+      <div>
+        <div class="site-title">부산 메디컬리그 기록 열람</div>
+        <div class="site-subtitle">Busan Medical League Baseball Records</div>
+      </div>
+
+      <nav>
+        <ul>
+          <li><a href="home.html">홈</a></li>
+          <li><a href="#">리그 소개</a></li>
+          <li><a href="records.html">기록실</a></li>
+          <li><a href="schedule.html">일정결과</a></li>
+          <li><a href="#">공지사항</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-panel">
+          <h2>팀 순위</h2>
+          <table class="ranking-table">
+            <thead>
+              <tr>
+                <th>순위</th>
+                <th>팀명</th>
+                <th>승</th>
+                <th>패</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td class="team-name">A팀</td>
+                <td>8</td>
+                <td>2</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td class="team-name">B팀</td>
+                <td>7</td>
+                <td>3</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td class="team-name">C팀</td>
+                <td>6</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td class="team-name">D팀</td>
+                <td>5</td>
+                <td>5</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td class="team-name">E팀</td>
+                <td>4</td>
+                <td>6</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="hero-panel">
+          <h2>최근 일정결과</h2>
+          <ul class="schedule-list">
+            <li>
+              <div class="schedule-date">2026-03-15</div>
+              <div class="schedule-match">A팀 vs B팀 6 : 4</div>
+            </li>
+            <li>
+              <div class="schedule-date">2026-03-15</div>
+              <div class="schedule-match">C팀 vs D팀 3 : 2</div>
+            </li>
+            <li>
+              <div class="schedule-date">2026-03-16</div>
+              <div class="schedule-match">E팀 vs F팀 1 : 8</div>
+            </li>
+            <li>
+              <div class="schedule-date">2026-03-17</div>
+              <div class="schedule-match">B팀 vs D팀 5 : 5</div>
+            </li>
+            <li>
+              <div class="schedule-date">2026-03-18</div>
+              <div class="schedule-match">A팀 vs C팀 7 : 3</div>
+            </li>
+          </ul>
+          <a href="#" class="hero-link">전체 일정결과 보기 →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <div class="container">
+
+      <section>
+        <h2 class="section-title">바로가기</h2>
+        <div class="cards">
+  <a href="records.html" class="card-link">
+    <div class="card">
+      <h3>기록실</h3>
+      <p>팀 기록과 선수 기록, 주요 순위표와 누적 성적을 열람합니다.</p>
+      <span class="quick-link">바로가기 →</span>
+    </div>
+  </a>
+
+  <a href="#" class="card-link">
+    <div class="card">
+      <h3>일정결과</h3>
+      <p>경기 일정, 종료 경기 스코어, 상세 결과와 경기 정보를 확인합니다.</p>
+      <span class="quick-link">바로가기 →</span>
+    </div>
+  </a>
+</div>
+      </section>
+
+      <section>
+        <h2 class="section-title">리그 현황</h2>
+        <div class="stats-grid">
+  <div class="stat-box">
+    <div class="number">1248</div>
+    <div class="label">타석</div>
+  </div>
+  <div class="stat-box">
+    <div class="number">356.2</div>
+    <div class="label">이닝</div>
+  </div>
+  <div class="stat-box">
+    <div class="number">214</div>
+    <div class="label">득점</div>
+  </div>
+  <div class="stat-box">
+    <div class="number">338</div>
+    <div class="label">안타</div>
+  </div>
+
+  <div class="stat-box">
+    <div class="number">128</div>
+    <div class="label">등록 선수</div>
+  </div>
+  <div class="stat-box">
+    <div class="number">0.317</div>
+    <div class="label">리그 타율</div>
+  </div>
+  <div class="stat-box">
+    <div class="number">0.401</div>
+    <div class="label">리그 출루율</div>
+  </div>
+  <div class="stat-box">
+    <div class="number">4.82</div>
+    <div class="label">리그 평균자책점</div>
+  </div>
+</div>
+      </section>
+
+      <section>
+        <h2 class="section-title">최근 공지</h2>
+        <div class="notice-box">
+          <ul class="notice-list">
+            <li>
+              <div class="notice-date">2026-03-18</div>
+              <div>기록 열람 홈페이지가 개설되었습니다.</div>
+            </li>
+            <li>
+              <div class="notice-date">2026-03-15</div>
+              <div>일부 경기 기록 수정 및 업데이트가 반영되었습니다.</div>
+            </li>
+            <li>
+              <div class="notice-date">2026-03-10</div>
+              <div>2026시즌 팀별 선수 등록 명단이 갱신되었습니다.</div>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        <strong>부산 메디컬리그 기록 열람</strong><br />
+        부산 지역 의과/치과/한의과 대학 야구 리그 기록 서비스
+      </div>
+      <div>
+        © 2026 Busan Medical League. All rights reserved.
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

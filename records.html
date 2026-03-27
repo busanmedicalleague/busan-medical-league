@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>기록실 | 부산 메디컬리그</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+      background-color: #f5f7fa;
+      color: #222;
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    header {
+      background: #0d2b52;
+      color: white;
+      padding: 20px 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .container {
+      width: 92%;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .site-title {
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .site-subtitle {
+      font-size: 14px;
+      opacity: 0.9;
+      margin-top: 4px;
+    }
+
+    nav ul {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      padding: 8px 14px;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+
+    nav a:hover,
+    nav a.active {
+      background: rgba(255,255,255,0.15);
+    }
+
+    .page-hero {
+      background: linear-gradient(135deg, #163d70, #295b97);
+      color: white;
+      padding: 34px 0;
+    }
+
+    .page-hero h1 {
+      font-size: 34px;
+      margin-bottom: 8px;
+    }
+
+    .page-hero p {
+      opacity: 0.95;
+      font-size: 16px;
+    }
+
+    main {
+      padding: 32px 0 60px;
+    }
+
+    .panel {
+      background: white;
+      border-radius: 18px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .tab-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .tab-btn {
+      border: none;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      background: #e8edf5;
+      color: #163d70;
+      transition: 0.2s;
+    }
+
+    .tab-btn:hover {
+      background: #dbe5f2;
+    }
+
+    .tab-btn.active {
+      background: #163d70;
+      color: white;
+    }
+
+    .sub-tab-btn.active {
+      background: #295b97;
+      color: white;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .toolbar-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #163d70;
+    }
+
+    .toolbar-meta {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .search-box {
+      min-width: 240px;
+      max-width: 320px;
+      width: 100%;
+    }
+
+    .search-box input {
+      width: 100%;
+      border: 1px solid #cfd8e3;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .search-box input:focus {
+      border-color: #295b97;
+    }
+
+    .table-wrap {
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 1000px;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+}
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 900px;
+      background: white;
+    }
+
+    thead {
+  background: #163d70;
+  color: white;
+}
+
+    th, td {
+      padding: 12px 10px;
+      text-align: center;
+      border-bottom: 1px solid #e9eef4;
+      white-space: nowrap;
+      font-size: 14px;
+    }
+
+    th {
+      font-weight: 700;
+    }
+
+    /* 1행(헤더) 고정 */
+/* 기본 헤더 고정 */
+thead th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #163d70;
+  color: white;
+}
+
+/* 본문 1열 고정 */
+tbody td:first-child {
+  position: sticky;
+  left: 0;
+  min-width: 80px;
+  z-index: 4;
+  background: #f8fbff;
+  font-weight: 700;
+}
+
+
+
+/* 헤더 1열 고정 */
+thead th:first-child {
+  position: sticky;
+  top: 0;
+  left: 0;
+  min-width: 80px;
+  z-index: 20;
+  background: #163d70;
+  color: white;
+}
+
+/* 기본 헤더 고정 */
+thead th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #163d70;
+  color: white;
+}
+
+/* 모든 표의 1열 고정 */
+tbody td:first-child {
+  position: sticky;
+  left: 0;
+  min-width: 80px;
+  z-index: 4;
+  background: #f8fbff;
+  font-weight: 700;
+}
+
+thead th:first-child {
+  position: sticky;
+  top: 0;
+  left: 0;
+  min-width: 80px;
+  z-index: 20;
+  background: #163d70;
+  color: white;
+}
+
+/* 타자/투수만 2열 고정 */
+table.batting tbody td:nth-child(2),
+table.pitching tbody td:nth-child(2) {
+  position: sticky;
+  left: 90px;
+  min-width: 90px;
+  z-index: 4;
+  background: #f8fbff;
+}
+
+table.batting thead th:nth-child(2),
+table.pitching thead th:nth-child(2) {
+  position: sticky;
+  top: 0;
+  left: 80px;
+  min-width: 90px;
+  z-index: 20;
+  background: #163d70;
+  color: white;
+}
+
+/* 타자/투수의 2열 본문 배경 유지 */
+table.batting tbody td:nth-child(2),
+table.pitching tbody td:nth-child(2) {
+  background: #f8fbff;
+}
+
+
+
+/* 첫 열 강조 */
+tbody td:first-child {
+  font-weight: 700;
+}
+
+    tbody tr:hover {
+      background: #f7fbff;
+    }
+
+    .status-box {
+      padding: 28px 16px;
+      text-align: center;
+      color: #666;
+      font-size: 15px;
+    }
+
+    .status-box.error {
+      color: #b42318;
+    }
+
+    footer {
+      background: #0d2b52;
+      color: #dce6f2;
+      padding: 24px 0;
+      font-size: 14px;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 768px) {
+      .site-title {
+        font-size: 24px;
+      }
+
+      .page-hero h1 {
+        font-size: 28px;
+      }
+
+      .panel {
+        padding: 18px;
+      }
+
+      .toolbar {
+        align-items: stretch;
+      }
+
+      .search-box {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container header-top">
+      <div>
+        <div class="site-title">부산 메디컬리그 기록 열람</div>
+        <div class="site-subtitle">Busan Medical League Baseball Records</div>
+      </div>
+
+      <nav>
+        <ul>
+          <li><a href="home.html">홈</a></li>
+          <li><a href="records.html" class="active">기록실</a></li>
+          <li><a href="schedule.html">일정결과</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="container">
+      <h1>기록실</h1>
+      <p>타자기록, 투수기록, 팀기록을 시즌별 및 통산 기준으로 확인할 수 있습니다.</p>
+    </div>
+  </section>
+
+  <main>
+    <div class="container">
+      <div class="panel">
+        <div class="tab-row" id="categoryTabs">
+          <button class="tab-btn active" data-category="batting">타자기록</button>
+          <button class="tab-btn" data-category="pitching">투수기록</button>
+          <button class="tab-btn" data-category="team">팀기록</button>
+        </div>
+
+        <div class="tab-row" id="seasonTabs">
+          <button class="tab-btn sub-tab-btn active" data-season="2025">2025시즌</button>
+          <button class="tab-btn sub-tab-btn" data-season="2026">2026시즌</button>
+          <button class="tab-btn sub-tab-btn" data-season="career">통산</button>
+        </div>
+
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <div class="toolbar-title" id="tableTitle">타자기록 | 2025시즌</div>
+            <div class="toolbar-meta" id="tableMeta">데이터 불러오는 중...</div>
+          </div>
+          <div class="search-box">
+            <input type="text" id="searchInput" placeholder="선수명, 팀명 등 검색" />
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <div id="tableContainer">
+            <div class="status-box">데이터를 불러오는 중입니다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        <strong>부산 메디컬리그 기록 열람</strong><br />
+        부산 지역 의과/치과/한의과 대학 야구 리그 기록 서비스
+      </div>
+      <div>
+        © 2026 Busan Medical League. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* =========================
+       1. 여기부터 네 시트 정보 입력
+       ========================= */
+
+    const SPREADSHEET_ID = "10BsN2RHtrAZJjhcOysCqh5f6d6a2PdQp-_OfK4Swto8";
+
+    const SHEETS = {
+      batting: {
+        2025: "695744287",
+        2026: "975293871",
+        career: "1333050365"
+      },
+      pitching: {
+        2025: "209430710",
+        2026: "1713998110",
+        career: "2034470514"
+      },
+      team: {
+        2025: "1657053328",
+        2026: "1460926660",
+        career: "603078946"
+      }
+    };
+
+    /* =========================
+       2. 기본 상태
+       ========================= */
+
+    let currentCategory = "batting";
+    let currentSeason = "2025";
+    let currentRows = [];
+    let currentHeaders = [];
+
+    const categoryLabelMap = {
+      batting: "타자기록",
+      pitching: "투수기록",
+      team: "팀기록"
+    };
+
+    const seasonLabelMap = {
+      "2025": "2025시즌",
+      "2026": "2026시즌",
+      career: "통산"
+    };
+
+    const categoryTabs = document.querySelectorAll("#categoryTabs .tab-btn");
+    const seasonTabs = document.querySelectorAll("#seasonTabs .tab-btn");
+    const tableTitle = document.getElementById("tableTitle");
+    const tableMeta = document.getElementById("tableMeta");
+    const tableContainer = document.getElementById("tableContainer");
+    const searchInput = document.getElementById("searchInput");
+
+    /* =========================
+       3. CSV 불러오기
+       ========================= */
+
+    function getCsvUrl(category, season) {
+      const gid = SHEETS[category][season];
+      return `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv&gid=${gid}`;
+    }
+
+    function parseCSV(text) {
+      const rows = [];
+      let row = [];
+      let cell = "";
+      let inQuotes = false;
+
+      for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        const nextChar = text[i + 1];
+
+        if (char === '"') {
+          if (inQuotes && nextChar === '"') {
+            cell += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (char === ',' && !inQuotes) {
+          row.push(cell);
+          cell = "";
+        } else if ((char === '\n' || char === '\r') && !inQuotes) {
+          if (char === '\r' && nextChar === '\n') i++;
+          row.push(cell);
+          rows.push(row);
+          row = [];
+          cell = "";
+        } else {
+          cell += char;
+        }
+      }
+
+      if (cell.length > 0 || row.length > 0) {
+        row.push(cell);
+        rows.push(row);
+      }
+
+      return rows.filter(r => r.some(cell => cell !== ""));
+    }
+
+    async function loadSheet(category, season) {
+      tableContainer.innerHTML = `<div class="status-box">데이터를 불러오는 중입니다.</div>`;
+      tableTitle.textContent = `${categoryLabelMap[category]} | ${seasonLabelMap[season]}`;
+      tableMeta.textContent = "시트 데이터를 불러오는 중...";
+
+      try {
+        const url = getCsvUrl(category, season);
+        const response = await fetch(url);
+
+        if (!response.ok) {
+          throw new Error("시트 데이터를 불러오지 못했습니다.");
+        }
+
+        const csvText = await response.text();
+        const parsed = parseCSV(csvText);
+
+        if (!parsed.length) {
+          currentHeaders = [];
+          currentRows = [];
+          tableContainer.innerHTML = `<div class="status-box">표시할 데이터가 없습니다.</div>`;
+          tableMeta.textContent = "0개 행";
+          return;
+        }
+
+        let columnLimit;
+
+if (currentCategory === "batting") {
+  columnLimit = 21; // U열
+} else if (currentCategory === "pitching") {
+  columnLimit = 22; // V열
+} else if (currentCategory === "team") {
+  columnLimit = 9; // I열
+}
+
+currentHeaders = parsed[0].slice(0, columnLimit);
+currentRows = parsed.slice(1).map(row => row.slice(0, columnLimit));
+
+        sortState.column = null;
+sortState.asc = true;
+
+        renderTable(currentHeaders, currentRows);
+        tableMeta.textContent = `${currentRows.length}개 행`;
+      } catch (error) {
+        tableContainer.innerHTML = `<div class="status-box error">데이터를 불러오지 못했습니다. 스프레드시트 ID, gid, 공개 설정을 확인해 주세요.</div>`;
+        tableMeta.textContent = "불러오기 실패";
+      }
+    }
+
+    /* =========================
+       4. 표 렌더링
+       ========================= */
+
+    function renderTable(headers, rows) {
+      if (!headers.length) {
+        tableContainer.innerHTML = `<div class="status-box">표시할 데이터가 없습니다.</div>`;
+        return;
+      }
+
+      let html = `<table class="${currentCategory}"><thead><tr>`;
+      headers.forEach((header, index) => {
+  html += `<th data-col="${index}" class="sortable">${escapeHtml(header)}</th>`;
+});
+      html += `</tr></thead><tbody>`;
+
+      if (!rows.length) {
+        html += `<tr><td colspan="${headers.length}">표시할 데이터가 없습니다.</td></tr>`;
+      } else {
+        rows.forEach(row => {
+          html += `<tr>`;
+          headers.forEach((_, index) => {
+            const value = row[index] ?? "";
+            html += `<td>${formatCell(value)}</td>`;
+          });
+          html += `</tr>`;
+        });
+      }
+
+      html += `</tbody></table>`;
+      tableContainer.innerHTML = html;
+
+      document.querySelectorAll(".sortable").forEach(th => {
+  th.addEventListener("click", () => {
+    const col = Number(th.dataset.col);
+    sortTable(col);
+  });
+});
+
+    }
+
+    function filterTable(keyword) {
+      const lowerKeyword = keyword.trim().toLowerCase();
+
+      if (!lowerKeyword) {
+        renderTable(currentHeaders, currentRows);
+        tableMeta.textContent = `${currentRows.length}개 행`;
+        return;
+      }
+
+      const filtered = currentRows.filter(row =>
+        row.some(cell => String(cell).toLowerCase().includes(lowerKeyword))
+      );
+
+      renderTable(currentHeaders, filtered);
+      tableMeta.textContent = `검색 결과 ${filtered.length}개 행`;
+    }
+
+    function formatCell(value) {
+      const trimmed = String(value).trim();
+
+      if (trimmed === "") {
+        return "-";
+      }
+
+      return escapeHtml(trimmed);
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    /* =========================
+       5. 탭 이벤트
+       ========================= */
+
+    categoryTabs.forEach(button => {
+      button.addEventListener("click", async () => {
+        categoryTabs.forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+
+        currentCategory = button.dataset.category;
+        searchInput.value = "";
+        await loadSheet(currentCategory, currentSeason);
+      });
+    });
+
+    seasonTabs.forEach(button => {
+      button.addEventListener("click", async () => {
+        seasonTabs.forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+
+        currentSeason = button.dataset.season;
+        searchInput.value = "";
+        await loadSheet(currentCategory, currentSeason);
+      });
+    });
+
+    searchInput.addEventListener("input", (e) => {
+      filterTable(e.target.value);
+    });
+
+    /* =========================
+       6. 첫 로딩
+       ========================= */
+
+    loadSheet(currentCategory, currentSeason);
+
+    let sortState = {
+  column: null,
+  asc: true
+};
+
+function sortTable(columnIndex) {
+  const isSameColumn = sortState.column === columnIndex;
+
+  if (isSameColumn) {
+    sortState.asc = !sortState.asc;
+  } else {
+    sortState.column = columnIndex;
+    sortState.asc = true;
+  }
+
+  currentRows.sort((a, b) => {
+    let A = (a[columnIndex] ?? "").toString().trim();
+    let B = (b[columnIndex] ?? "").toString().trim();
+
+    const numA = parseFloat(A);
+    const numB = parseFloat(B);
+
+    const isNumberA = A !== "" && !isNaN(numA);
+    const isNumberB = B !== "" && !isNaN(numB);
+
+    if (isNumberA && isNumberB) {
+      return sortState.asc ? numA - numB : numB - numA;
+    }
+
+    return sortState.asc
+      ? A.localeCompare(B, "ko")
+      : B.localeCompare(A, "ko");
+  });
+
+  renderTable(currentHeaders, currentRows);
+  updateSortIcons();
+}
+
+function updateSortIcons() {
+  document.querySelectorAll(".sortable").forEach(th => {
+    const col = Number(th.dataset.col);
+    const baseText = th.textContent.replace(" ▲", "").replace(" ▼", "");
+
+    if (col === sortState.column) {
+      th.textContent = sortState.asc
+        ? baseText + " ▲"
+        : baseText + " ▼";
+    } else {
+      th.textContent = baseText;
+    }
+  });
+}
+
+  </script>
+</body>
+</html>

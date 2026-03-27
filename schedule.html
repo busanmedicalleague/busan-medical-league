@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>일정결과 | 부산 메디컬리그</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+      background-color: #f5f7fa;
+      color: #222;
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button {
+      font: inherit;
+      border: none;
+      background: none;
+      cursor: pointer;
+    }
+
+    header {
+      background: #0d2b52;
+      color: white;
+      padding: 20px 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .container {
+      width: 92%;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .site-title {
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .site-subtitle {
+      font-size: 14px;
+      opacity: 0.9;
+      margin-top: 4px;
+    }
+
+    nav ul {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      list-style: none;
+    }
+
+    nav a {
+      padding: 8px 14px;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+
+    nav a:hover,
+    nav a.active {
+      background: rgba(255,255,255,0.15);
+    }
+
+    .page-hero {
+      background: linear-gradient(135deg, #163d70, #295b97);
+      color: white;
+      padding: 34px 0;
+    }
+
+    .page-hero h1 {
+      font-size: 34px;
+      margin-bottom: 8px;
+    }
+
+    .page-hero p {
+      opacity: 0.95;
+      font-size: 16px;
+    }
+
+    main {
+      padding: 28px 0 60px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .panel {
+      background: white;
+      border-radius: 18px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+
+    .panel-header {
+      padding: 18px 20px;
+      border-bottom: 1px solid #e5eaf0;
+      background: white;
+    }
+
+    .panel-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #163d70;
+    }
+
+    .panel-subtitle {
+      margin-top: 6px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .game-list {
+      max-height: 820px;
+      overflow-y: auto;
+    }
+
+    .game-item {
+      width: 100%;
+      display: block;
+      text-align: left;
+      padding: 16px 18px;
+      border-bottom: 1px solid #edf1f5;
+      background: white;
+      transition: background 0.2s;
+    }
+
+    .game-item:hover {
+      background: #f7fbff;
+    }
+
+    .game-item.active {
+      background: #eaf3ff;
+      border-left: 5px solid #295b97;
+      padding-left: 13px;
+    }
+
+    .game-date {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 6px;
+    }
+
+    .game-matchup {
+  font-size: 20px;
+  font-weight: 800;
+  color: #163d70;
+  margin-bottom: 6px;
+  line-height: 1.35;
+}
+
+.game-score {
+  display: none;
+}
+
+    .viewer-wrap {
+      padding: 24px;
+    }
+
+    .empty-box {
+      min-height: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #666;
+      font-size: 16px;
+      text-align: center;
+    }
+
+    .viewer-header {
+      margin-bottom: 18px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid #e6ebf2;
+    }
+
+    .viewer-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: #163d70;
+      margin-bottom: 8px;
+    }
+
+    .viewer-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 18px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .slider-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .slider-stage {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  background: #f1f5f9;
+  aspect-ratio: 4 / 5;  /* 1080 : 1350 비율 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+    .slide-image {
+      max-width: 100%;
+      max-height: 100%;
+      display: block;
+      object-fit: contain;
+      user-select: none;
+      image-rendering: auto;
+    }
+
+    .slider-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: rgba(13, 43, 82, 0.78);
+      color: white;
+      font-size: 22px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      z-index: 3;
+    }
+
+    .slider-nav:hover {
+      background: rgba(13, 43, 82, 0.92);
+    }
+
+    .slider-nav.prev {
+      left: 14px;
+    }
+
+    .slider-nav.next {
+      right: 14px;
+    }
+
+    .slide-counter {
+      position: absolute;
+      bottom: 14px;
+      right: 14px;
+      background: rgba(0,0,0,0.65);
+      color: white;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      z-index: 3;
+    }
+
+    .slider-footer {
+      padding: 16px 18px;
+      border-top: 1px solid #e8edf3;
+      background: white;
+    }
+
+    .slide-caption {
+      font-size: 15px;
+      color: #163d70;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .dot-list {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #cfd8e3;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .dot.active {
+      background: #163d70;
+      transform: scale(1.15);
+    }
+
+    .thumb-list {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .thumb-btn {
+      border: 2px solid transparent;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #f8fbff;
+      padding: 0;
+    }
+
+    .thumb-btn.active {
+      border-color: #163d70;
+    }
+
+    .thumb-btn img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      display: block;
+    }
+
+    .viewer-note {
+      margin-top: 14px;
+      font-size: 13px;
+      color: #666;
+    }
+
+    footer {
+      background: #0d2b52;
+      color: #dce6f2;
+      padding: 24px 0;
+      font-size: 14px;
+      margin-top: 40px;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 1080px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .game-list {
+        max-height: 360px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .page-hero h1 {
+        font-size: 28px;
+      }
+
+      .viewer-wrap {
+        padding: 18px;
+      }
+
+      .viewer-title {
+        font-size: 22px;
+      }
+
+      .slider-nav {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+      }
+
+      .thumb-list {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container header-top">
+      <div>
+        <div class="site-title">부산 메디컬리그 기록 열람</div>
+        <div class="site-subtitle">Busan Medical League Baseball Records</div>
+      </div>
+
+      <nav>
+        <ul>
+          <li><a href="home.html">홈</a></li>
+          <li><a href="records.html">기록실</a></li>
+          <li><a href="schedule.html" class="active">일정결과</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="container">
+      <h1>일정결과</h1>
+      <p>최근 경기 목록을 확인하고, 각 경기의 BOX SCORE 이미지를 열람할 수 있습니다.</p>
+    </div>
+  </section>
+
+  <main>
+    <div class="container">
+      <div class="layout">
+        <section class="panel">
+          <div class="panel-header">
+            <div class="panel-title">최근 경기</div>
+            <div class="panel-subtitle">위에 있을수록 최근 경기입니다.</div>
+          </div>
+          <div class="game-list" id="gameList"></div>
+        </section>
+
+        <section class="panel">
+          <div class="viewer-wrap" id="viewerContainer">
+            <div class="empty-box">
+              왼쪽에서 경기를 선택하면<br />
+              BOX SCORE 이미지가 표시됩니다.
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        <strong>부산 메디컬리그 기록 열람</strong><br />
+        부산 지역 의과/치과/한의과 대학 야구 리그 기록 서비스
+      </div>
+      <div>
+        © 2026 Busan Medical League. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /*
+      각 경기마다 images 배열에 BOX SCORE 이미지 4장의 경로를 넣으면 된다.
+      예:
+      images: [
+        "images/25032901_1.jpg",
+        "images/25032901_2.jpg",
+        "images/25032901_3.jpg",
+        "images/25032901_4.jpg"
+      ]
+    */
+
+    const games = [
+      {
+        gameId: "25032901",
+        date: "2025-03-29",
+        time: "09:00",
+        order: "1경기",
+        stadium: "구덕야구장",
+        awayTeam: "동의한의대",
+        homeTeam: "동아의대",
+        awayScore: 4,
+        homeScore: 6,
+        images: [
+          "images/25032901_1.jpg",
+          "images/25032901_2.jpg",
+          "images/25032901_3.jpg",
+          "images/25032901_4.jpg"
+        ]
+      },
+      {
+        gameId: "25032902",
+        date: "2025-03-29",
+        time: "12:00",
+        order: "2경기",
+        stadium: "구덕야구장",
+        awayTeam: "부산의대",
+        homeTeam: "고신의대",
+        awayScore: 2,
+        homeScore: 5,
+        images: [
+          "images/25032902_1.jpg",
+          "images/25032902_2.jpg",
+          "images/25032902_3.jpg",
+          "images/25032902_4.jpg"
+        ]
+      },
+      {
+        gameId: "25032901",
+        date: "2025.03.29",
+        time: "14:00",
+        order: "1경기",
+        stadium: "삼락D",
+        awayTeam: "동의한의대",
+        homeTeam: "고신의대",
+        awayScore: 6,
+        homeScore: 4,
+        images: [
+          "부산 메디컬리그 경기결과 이미지/25032901/001.png",
+          "부산 메디컬리그 경기결과 이미지/25032901/002.png",
+          "부산 메디컬리그 경기결과 이미지/25032901/003.png",
+          "부산 메디컬리그 경기결과 이미지/25032901/004.png"
+        ]
+      }
+    ];
+
+    const gameList = document.getElementById("gameList");
+    const viewerContainer = document.getElementById("viewerContainer");
+
+    let currentGame = null;
+    let currentSlideIndex = 0;
+
+    function renderGameList() {
+      const sortedGames = [...games].sort((a, b) => {
+        const aKey = `${a.date} ${a.time}`;
+        const bKey = `${b.date} ${b.time}`;
+        return bKey.localeCompare(aKey);
+      });
+
+      gameList.innerHTML = sortedGames.map((game, index) => `
+        <button class="game-item ${index === 0 ? "active" : ""}" data-game-id="${escapeHtml(game.gameId)}">
+          <div class="game-date">${escapeHtml(game.date)} ${escapeHtml(game.time)} · ${escapeHtml(game.order)}</div>
+          <div class="game-matchup">${escapeHtml(game.awayTeam)} ${escapeHtml(String(game.awayScore))} : ${escapeHtml(String(game.homeScore))} ${escapeHtml(game.homeTeam)}</div>
+        </button>
+      `).join("");
+
+      document.querySelectorAll(".game-item").forEach(button => {
+        button.addEventListener("click", () => {
+          document.querySelectorAll(".game-item").forEach(item => item.classList.remove("active"));
+          button.classList.add("active");
+
+          const selectedId = button.dataset.gameId;
+          const selectedGame = games.find(game => game.gameId === selectedId);
+
+          currentGame = selectedGame;
+          currentSlideIndex = 0;
+          renderViewer();
+        });
+      });
+
+      if (sortedGames.length > 0) {
+        currentGame = sortedGames[0];
+        currentSlideIndex = 0;
+        renderViewer();
+      }
+    }
+
+    function renderViewer() {
+      if (!currentGame) {
+        viewerContainer.innerHTML = `
+          <div class="empty-box">
+            표시할 경기 정보가 없습니다.
+          </div>
+        `;
+        return;
+      }
+
+      const totalSlides = currentGame.images.length;
+      const currentImage = currentGame.images[currentSlideIndex];
+
+      viewerContainer.innerHTML = `
+        <div class="viewer-header">
+          <div class="viewer-title">
+            ${escapeHtml(currentGame.awayTeam)} ${escapeHtml(String(currentGame.awayScore))}
+            :
+            ${escapeHtml(String(currentGame.homeScore))} ${escapeHtml(currentGame.homeTeam)}
+          </div>
+          <div class="viewer-meta">
+            <div>${escapeHtml(currentGame.date)} ${escapeHtml(currentGame.time)}</div>
+            <div>${escapeHtml(currentGame.order)}</div>
+            <div>${escapeHtml(currentGame.stadium)}</div>
+          </div>
+        </div>
+
+        <div class="slider-card">
+          <div class="slider-stage">
+            <button class="slider-nav prev" id="prevBtn" aria-label="이전 이미지">‹</button>
+            <img
+              class="slide-image"
+              src="${escapeHtml(currentImage)}"
+              alt="${escapeHtml(currentGame.gameId)} BOX SCORE ${currentSlideIndex + 1}"
+            />
+            <button class="slider-nav next" id="nextBtn" aria-label="다음 이미지">›</button>
+            <div class="slide-counter">${currentSlideIndex + 1} / ${totalSlides}</div>
+          </div>
+
+          <div class="slider-footer">
+            
+
+            <div class="dot-list">
+              ${currentGame.images.map((_, index) => `
+                <button
+                  class="dot ${index === currentSlideIndex ? "active" : ""}"
+                  data-slide-index="${index}"
+                  aria-label="이미지 ${index + 1} 보기"
+                ></button>
+              `).join("")}
+            </div>
+
+            <div class="thumb-list">
+              ${currentGame.images.map((image, index) => `
+                <button
+                  class="thumb-btn ${index === currentSlideIndex ? "active" : ""}"
+                  data-slide-index="${index}"
+                  aria-label="썸네일 ${index + 1}"
+                >
+                  <img src="${escapeHtml(image)}" alt="썸네일 ${index + 1}" />
+                </button>
+              `).join("")}
+            </div>
+
+            
+          </div>
+        </div>
+      `;
+
+      document.getElementById("prevBtn").addEventListener("click", showPrevSlide);
+      document.getElementById("nextBtn").addEventListener("click", showNextSlide);
+
+      document.querySelectorAll("[data-slide-index]").forEach(button => {
+        button.addEventListener("click", () => {
+          currentSlideIndex = Number(button.dataset.slideIndex);
+          renderViewer();
+        });
+      });
+    }
+
+    function showPrevSlide() {
+      if (!currentGame) return;
+      currentSlideIndex = (currentSlideIndex - 1 + currentGame.images.length) % currentGame.images.length;
+      renderViewer();
+    }
+
+    function showNextSlide() {
+      if (!currentGame) return;
+      currentSlideIndex = (currentSlideIndex + 1) % currentGame.images.length;
+      renderViewer();
+    }
+
+    document.addEventListener("keydown", (event) => {
+      if (!currentGame) return;
+
+      if (event.key === "ArrowLeft") {
+        showPrevSlide();
+      } else if (event.key === "ArrowRight") {
+        showNextSlide();
+      }
+    });
+
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    renderGameList();
+  </script>
+</body>
+</html>
