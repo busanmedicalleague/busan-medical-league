@@ -399,13 +399,13 @@
   <header>
     <div class="container header-top">
       <div>
-        <div class="site-title">부산 메디컬리그 기록 열람</div>
-        <div class="site-subtitle">Busan Medical League Baseball Records</div>
+        <div class="site-title">부산 메디컬리그</div>
+        <div class="site-subtitle">부산 메디컬리그 공식 홈페이지</div>
       </div>
 
       <nav>
         <ul>
-          <li><a href="home.html">홈</a></li>
+          <li><a href="index.html">홈</a></li>
           <li><a href="records.html">기록실</a></li>
           <li><a href="schedule.html" class="active">일정결과</a></li>
         </ul>
@@ -416,7 +416,7 @@
   <section class="page-hero">
     <div class="container">
       <h1>일정결과</h1>
-      <p>최근 경기 목록을 확인하고, 각 경기의 BOX SCORE 이미지를 열람할 수 있습니다.</p>
+      <p>경기일정 및 BOX SCORE</p>
     </div>
   </section>
 
@@ -425,8 +425,7 @@
       <div class="layout">
         <section class="panel">
           <div class="panel-header">
-            <div class="panel-title">최근 경기</div>
-            <div class="panel-subtitle">위에 있을수록 최근 경기입니다.</div>
+            <div class="panel-title">일정결과</div>
           </div>
           <div class="game-list" id="gameList"></div>
         </section>
@@ -446,11 +445,11 @@
   <footer>
     <div class="container footer-inner">
       <div>
-        <strong>부산 메디컬리그 기록 열람</strong><br />
-        부산 지역 의과/치과/한의과 대학 야구 리그 기록 서비스
+        <strong>부산 메디컬리그 공식 홈페이지</strong><br />
+        
       </div>
       <div>
-        © 2026 Busan Medical League. All rights reserved.
+        © Busan Medical League. All rights reserved.
       </div>
     </div>
   </footer>
@@ -466,42 +465,18 @@
         "images/25032901_4.jpg"
       ]
     */
+    function getImages(gameId) {
+  const basePath = `부산 메디컬리그 경기결과 이미지/${gameId}`;
+  return [
+    `${basePath}/001.png`,
+    `${basePath}/002.png`,
+    `${basePath}/003.png`,
+    `${basePath}/004.png`
+  ];
+}
 
     const games = [
-      {
-        gameId: "25032901",
-        date: "2025-03-29",
-        time: "09:00",
-        order: "1경기",
-        stadium: "구덕야구장",
-        awayTeam: "동의한의대",
-        homeTeam: "동아의대",
-        awayScore: 4,
-        homeScore: 6,
-        images: [
-          "images/25032901_1.jpg",
-          "images/25032901_2.jpg",
-          "images/25032901_3.jpg",
-          "images/25032901_4.jpg"
-        ]
-      },
-      {
-        gameId: "25032902",
-        date: "2025-03-29",
-        time: "12:00",
-        order: "2경기",
-        stadium: "구덕야구장",
-        awayTeam: "부산의대",
-        homeTeam: "고신의대",
-        awayScore: 2,
-        homeScore: 5,
-        images: [
-          "images/25032902_1.jpg",
-          "images/25032902_2.jpg",
-          "images/25032902_3.jpg",
-          "images/25032902_4.jpg"
-        ]
-      },
+      
       {
         gameId: "25032901",
         date: "2025.03.29",
@@ -509,16 +484,199 @@
         order: "1경기",
         stadium: "삼락D",
         awayTeam: "동의한의대",
-        homeTeam: "고신의대",
+        homeTeam: "동아의대",
         awayScore: 6,
         homeScore: 4,
-        images: [
-          "부산 메디컬리그 경기결과 이미지/25032901/001.png",
-          "부산 메디컬리그 경기결과 이미지/25032901/002.png",
-          "부산 메디컬리그 경기결과 이미지/25032901/003.png",
-          "부산 메디컬리그 경기결과 이미지/25032901/004.png"
-        ]
-      }
+        
+      },
+      {
+        gameId: "25040501",
+        date: "2025.04.05",
+        time: "11:30",
+        order: "1경기",
+        stadium: "황산2",
+        awayTeam: "부산한의대",
+        homeTeam: "부산치대",
+        awayScore: 11,
+        homeScore: 5,
+        
+      },
+      {
+        gameId: "25041201",
+        date: "2025.04.12",
+        time: "12:00",
+        order: "1경기",
+        stadium: "범어2",
+        awayTeam: "부산한의대",
+        homeTeam: "부산의대",
+        awayScore: 6,
+        homeScore: 7,
+      },
+      {
+        gameId: "25051101",
+        date: "2025.05.11",
+        time: "15:00",
+        order: "1경기",
+        stadium: "삼락D",
+        awayTeam: "부산치대",
+        homeTeam: "동의한의대",
+        awayScore: 9,
+        homeScore: 7,
+      },
+      {
+        gameId: "25053101",
+        date: "2025.05.31",
+        time: "11:00",
+        order: "1경기",
+        stadium: "대저A",
+        awayTeam: "고신의대",
+        homeTeam: "경성약대",
+        awayScore: 6,
+        homeScore: 4,
+      },
+      {
+        gameId: "25060701",
+        date: "2025.06.07",
+        time: "16:00",
+        order: "1경기",
+        stadium: "삼락B",
+        awayTeam: "동의한의대",
+        homeTeam: "고신의대",
+        awayScore: 3,
+        homeScore: 13,
+      },
+      {
+        gameId: "25062801",
+        date: "2025.06.28",
+        time: "13:00",
+        order: "1경기",
+        stadium: "삼락D",
+        awayTeam: "고신의대",
+        homeTeam: "부산한의대",
+        awayScore: 2,
+        homeScore: 4,
+      },
+      {
+        gameId: "25071201",
+        date: "2025.07.12",
+        time: "16:30",
+        order: "1경기",
+        stadium: "삼락D",
+        awayTeam: "경성약대",
+        homeTeam: "동아의대",
+        awayScore: 33,
+        homeScore: 0,
+      },
+      {
+        gameId: "25090701",
+        date: "2025.09.07",
+        time: "9:00",
+        order: "1경기",
+        stadium: "대저A",
+        awayTeam: "경성약대",
+        homeTeam: "부산한의대",
+        awayScore: 3,
+        homeScore: 2,
+      },
+      {
+        gameId: "25092701",
+        date: "2025.09.27",
+        time: "11:00",
+        order: "1경기",
+        stadium: "황산2",
+        awayTeam: "동의한의대",
+        homeTeam: "부산의대",
+        awayScore: 4,
+        homeScore: 13,
+      },
+      {
+        gameId: "25092702",
+        date: "2025.09.27",
+        time: "15:00",
+        order: "2경기",
+        stadium: "황산2",
+        awayTeam: "부산치대",
+        homeTeam: "고신의대",
+        awayScore: 6,
+        homeScore: 5,
+      },
+      {
+        gameId: "25101201",
+        date: "2025.10.12",
+        time: "11:00",
+        order: "1경기",
+        stadium: "대저A",
+        awayTeam: "부산의대",
+        homeTeam: "경성약대",
+        awayScore: 10,
+        homeScore: 3,
+      },
+      {
+        gameId: "25101202",
+        date: "2025.10.12",
+        time: "15:00",
+        order: "2경기",
+        stadium: "대저A",
+        awayTeam: "부산한의대",
+        homeTeam: "동의한의대",
+        awayScore: 15,
+        homeScore: 5,
+      },
+      {
+        gameId: "25110101",
+        date: "2025.11.01",
+        time: "15:00",
+        order: "1경기",
+        stadium: "삼락B",
+        awayTeam: "동아의대",
+        homeTeam: "고신의대",
+        awayScore: 3,
+        homeScore: 9,
+      },
+      {
+        gameId: "25110801",
+        date: "2025.11.08",
+        time: "11:00",
+        order: "1경기",
+        stadium: "대저A",
+        awayTeam: "부산치대",
+        homeTeam: "경성약대",
+        awayScore: 6,
+        homeScore: 15,
+      },
+      {
+        gameId: "25111501",
+        date: "2025.11.15",
+        time: "11:00",
+        order: "1경기",
+        stadium: "대저A",
+        awayTeam: "동아의대",
+        homeTeam: "부산치대",
+        awayScore: 2,
+        homeScore: 22,
+      },
+      {
+        gameId: "25112201",
+        date: "2025.11.22",
+        time: "14:30",
+        order: "2025 부산 메디컬리그 플레이오프",
+        stadium: "삼락D",
+        awayTeam: "고신의대",
+        homeTeam: "부산치대",
+        awayScore: 7,
+        homeScore: 8,
+      },
+      {
+        gameId: "25112901",
+        date: "2025.11.29",
+        time: "13:30",
+        order: "2025 부산 메디컬시리즈",
+        stadium: "황산2",
+        awayTeam: "부산치대",
+        homeTeam: "부산한의대",
+        awayScore: 8,
+        homeScore: 7,
+      },
     ];
 
     const gameList = document.getElementById("gameList");
@@ -572,8 +730,9 @@
         return;
       }
 
-      const totalSlides = currentGame.images.length;
-      const currentImage = currentGame.images[currentSlideIndex];
+      const images = getImages(currentGame.gameId);
+const totalSlides = images.length;
+const currentImage = images[currentSlideIndex];
 
       viewerContainer.innerHTML = `
         <div class="viewer-header">
@@ -605,7 +764,7 @@
             
 
             <div class="dot-list">
-              ${currentGame.images.map((_, index) => `
+              ${images.map((_, index) => `
                 <button
                   class="dot ${index === currentSlideIndex ? "active" : ""}"
                   data-slide-index="${index}"
@@ -615,7 +774,7 @@
             </div>
 
             <div class="thumb-list">
-              ${currentGame.images.map((image, index) => `
+              ${images.map((image, index) => `
                 <button
                   class="thumb-btn ${index === currentSlideIndex ? "active" : ""}"
                   data-slide-index="${index}"
