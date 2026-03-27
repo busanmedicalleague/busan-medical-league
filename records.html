@@ -367,13 +367,13 @@ tbody td:first-child {
   <header>
     <div class="container header-top">
       <div>
-        <div class="site-title">부산 메디컬리그 기록 열람</div>
-        <div class="site-subtitle">Busan Medical League Baseball Records</div>
+        <div class="site-title">부산 메디컬리그</div>
+        <div class="site-subtitle">부산 메디컬리그 공식 홈페이지</div>
       </div>
 
       <nav>
         <ul>
-          <li><a href="home.html">홈</a></li>
+          <li><a href="index.html">홈</a></li>
           <li><a href="records.html" class="active">기록실</a></li>
           <li><a href="schedule.html">일정결과</a></li>
         </ul>
@@ -384,7 +384,7 @@ tbody td:first-child {
   <section class="page-hero">
     <div class="container">
       <h1>기록실</h1>
-      <p>타자기록, 투수기록, 팀기록을 시즌별 및 통산 기준으로 확인할 수 있습니다.</p>
+      <p>시즌별 및 통산 타자기록, 투수기록, 팀기록</p>
     </div>
   </section>
 
@@ -398,10 +398,10 @@ tbody td:first-child {
         </div>
 
         <div class="tab-row" id="seasonTabs">
-          <button class="tab-btn sub-tab-btn active" data-season="2025">2025시즌</button>
-          <button class="tab-btn sub-tab-btn" data-season="2026">2026시즌</button>
-          <button class="tab-btn sub-tab-btn" data-season="career">통산</button>
-        </div>
+  <button class="tab-btn sub-tab-btn active" data-season="2026">2026시즌</button>
+  <button class="tab-btn sub-tab-btn" data-season="2025">2025시즌</button>
+  <button class="tab-btn sub-tab-btn" data-season="career">통산</button>
+</div>
 
         <div class="toolbar">
           <div class="toolbar-left">
@@ -409,7 +409,7 @@ tbody td:first-child {
             <div class="toolbar-meta" id="tableMeta">데이터 불러오는 중...</div>
           </div>
           <div class="search-box">
-            <input type="text" id="searchInput" placeholder="선수명, 팀명 등 검색" />
+            <input type="text" id="searchInput" placeholder="선수명, 팀명 검색" />
           </div>
         </div>
 
@@ -425,11 +425,11 @@ tbody td:first-child {
   <footer>
     <div class="container footer-inner">
       <div>
-        <strong>부산 메디컬리그 기록 열람</strong><br />
-        부산 지역 의과/치과/한의과 대학 야구 리그 기록 서비스
+        <strong>부산 메디컬리그 공식 홈페이지</strong><br />
+        
       </div>
       <div>
-        © 2026 Busan Medical League. All rights reserved.
+        © Busan Medical League. All rights reserved.
       </div>
     </div>
   </footer>
@@ -464,7 +464,7 @@ tbody td:first-child {
        ========================= */
 
     let currentCategory = "batting";
-    let currentSeason = "2025";
+    let currentSeason = "2026";
     let currentRows = [];
     let currentHeaders = [];
 
@@ -572,11 +572,12 @@ if (currentCategory === "batting") {
 currentHeaders = parsed[0].slice(0, columnLimit);
 currentRows = parsed.slice(1).map(row => row.slice(0, columnLimit));
 
-        sortState.column = null;
+sortState.column = null;
 sortState.asc = true;
 
-        renderTable(currentHeaders, currentRows);
-        tableMeta.textContent = `${currentRows.length}개 행`;
+renderTable(currentHeaders, currentRows);
+applyDefaultSort();
+tableMeta.textContent = `${currentRows.length}개 행`;
       } catch (error) {
         tableContainer.innerHTML = `<div class="status-box error">데이터를 불러오지 못했습니다. 스프레드시트 ID, gid, 공개 설정을 확인해 주세요.</div>`;
         tableMeta.textContent = "불러오기 실패";
@@ -701,14 +702,19 @@ sortState.asc = true;
   asc: true
 };
 
-function sortTable(columnIndex) {
+function sortTable(columnIndex, forcedAsc = null) {
   const isSameColumn = sortState.column === columnIndex;
 
-  if (isSameColumn) {
-    sortState.asc = !sortState.asc;
-  } else {
+  if (forcedAsc !== null) {
     sortState.column = columnIndex;
-    sortState.asc = true;
+    sortState.asc = forcedAsc;
+  } else {
+    if (isSameColumn) {
+      sortState.asc = !sortState.asc;
+    } else {
+      sortState.column = columnIndex;
+      sortState.asc = true;
+    }
   }
 
   currentRows.sort((a, b) => {
@@ -732,6 +738,14 @@ function sortTable(columnIndex) {
 
   renderTable(currentHeaders, currentRows);
   updateSortIcons();
+}
+
+function applyDefaultSort() {
+  if (currentCategory === "batting") {
+    sortTable(6, false); // 7열(타율), 내림차순
+  } else if (currentCategory === "pitching") {
+    sortTable(4, true); // 5열(평균자책점), 오름차순
+  }
 }
 
 function updateSortIcons() {
