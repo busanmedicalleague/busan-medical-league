@@ -677,6 +677,17 @@
         awayScore: 8,
         homeScore: 7,
       },
+      {
+        gameId: "26032801",
+        date: "2026.03.28",
+        time: "12:00",
+        order: "1경기",
+        stadium: "대저B",
+        awayTeam: "부산한의대",
+        homeTeam: "고신의대",
+        awayScore: 9,
+        homeScore: 8,
+      },
     ];
 
     const gameList = document.getElementById("gameList");
@@ -802,16 +813,18 @@ const currentImage = images[currentSlideIndex];
     }
 
     function showPrevSlide() {
-      if (!currentGame) return;
-      currentSlideIndex = (currentSlideIndex - 1 + currentGame.images.length) % currentGame.images.length;
-      renderViewer();
-    }
+  if (!currentGame) return;
+  const images = getImages(currentGame.gameId);
+  currentSlideIndex = (currentSlideIndex - 1 + images.length) % images.length;
+  renderViewer();
+}
 
-    function showNextSlide() {
-      if (!currentGame) return;
-      currentSlideIndex = (currentSlideIndex + 1) % currentGame.images.length;
-      renderViewer();
-    }
+function showNextSlide() {
+  if (!currentGame) return;
+  const images = getImages(currentGame.gameId);
+  currentSlideIndex = (currentSlideIndex + 1) % images.length;
+  renderViewer();
+}
 
     document.addEventListener("keydown", (event) => {
       if (!currentGame) return;
